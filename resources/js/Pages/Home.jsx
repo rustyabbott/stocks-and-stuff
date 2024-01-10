@@ -1,4 +1,4 @@
-import DarkModeToggle from '@/Components/DarkModeToggle';
+import Footer from '@/Components/Footer';
 import { Link, Head } from '@inertiajs/react';
 
 export default function Home({ auth, laravelVersion, phpVersion }) {
@@ -6,10 +6,6 @@ export default function Home({ auth, laravelVersion, phpVersion }) {
         <>
             <Head title="Home" />
             <div className="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-center bg-white dark:bg-black selection:bg-red-500 selection:text-white">
-                <div className="sm:fixed sm:top-0 sm:left-0 px-4 py-6">
-                    <DarkModeToggle></DarkModeToggle>
-                </div>
-
                 <div className="sm:fixed sm:top-0 sm:right-0 p-6 text-right">
                     {auth.user ? (
                         <Link
@@ -45,6 +41,8 @@ export default function Home({ auth, laravelVersion, phpVersion }) {
                     </div>
                 </div>
             </div>
+
+            <Footer></Footer>
 
             <style>{`
                 .bg-dots-darker {
