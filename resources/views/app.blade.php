@@ -12,13 +12,15 @@
 
         <!-- Scripts -->
         <script>
-            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.body.classList.add('dark');
-                localStorage.theme = 'dark';
-            } else {
-                document.body.classList.remove('dark');
-                localStorage.theme = 'light';
-            };
+            window.addEventListener('DOMContentLoaded', function(e) {
+                if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.body.classList.add('dark');
+                    localStorage.theme = 'dark';
+                } else {
+                    document.body.classList.remove('dark');
+                    localStorage.theme = 'light';
+                };
+            });
         </script>
         @routes
         @viteReactRefresh
