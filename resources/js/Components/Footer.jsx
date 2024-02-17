@@ -4,8 +4,7 @@ export default function Footer() {
     const currentYear = new Date().getFullYear();
 
     return (
-        <>
-            <footer className="text-gray-900 dark:text-gray-300 dark:bg-black">
+            <footer className="h-[48px] w-full bg-white dark:bg-black text-black dark:text-white">
                 <div className="float-right p-2">
                     &copy; {currentYear} Rusty Abbott
                 </div>
@@ -14,6 +13,5 @@ export default function Footer() {
                     <DarkModeToggle></DarkModeToggle>
                 </div>
             </footer>
-        </>
     );
 }
