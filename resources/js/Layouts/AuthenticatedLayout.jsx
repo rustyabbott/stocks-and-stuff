@@ -15,7 +15,7 @@ export default function Authenticated({ user, header, children }) {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex">
-                            <div className="w-1/3">
+                            <div className="w-[64px]">
                                 <Link href="/">
                                     <ApplicationLogo />
                                 </Link>
@@ -120,7 +120,7 @@ export default function Authenticated({ user, header, children }) {
                 </header>
             )}
 
-            <main>{children}</main>
+            <main className="dark:bg-black">{children}</main>
             <Footer></Footer>
         </div>
     );
