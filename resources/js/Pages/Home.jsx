@@ -5,7 +5,7 @@ export default function Home({ auth, laravelVersion, phpVersion }) {
     return (
         <>
             <Head title="Home" />
-            <div className="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-center bg-white dark:bg-black selection:bg-red-500 selection:text-white">
+            <div className="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-center bg-gray-100 dark:bg-neutral-800 selection:bg-red-500 selection:text-white">
                 <div className="sm:fixed sm:top-0 sm:right-0 p-6 text-right">
                     {auth.user ? (
                         <Link
