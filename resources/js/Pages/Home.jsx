@@ -1,12 +1,17 @@
 import Footer from '@/Components/Footer';
+import TickerPanel from '@/Components/TickerPanel';
 import { Link, Head } from '@inertiajs/react';
 
 export default function Home({ auth, laravelVersion, phpVersion }) {
+    const panelInstances = Array.from({ length: 10 }, (_, index) => (
+        <TickerPanel key={index} />
+    ));
+
     return (
         <>
             <Head title="Home" />
-            <div className="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-center bg-gray-100 dark:bg-neutral-800 selection:bg-red-500 selection:text-white">
-                <div className="sm:fixed sm:top-0 sm:right-0 p-6 text-right">
+            <div className="relative min-h-screen bg-center bg-gray-100 dark:bg-neutral-800 selection:bg-red-500 selection:text-white">
+                <div className="p-6 text-right">
                     {auth.user ? (
                         <Link
                             href={route('dashboard')}
@@ -33,11 +38,9 @@ export default function Home({ auth, laravelVersion, phpVersion }) {
                     )}
                 </div>
 
-                <div className="max-w-7xl mx-auto p-6 lg:p-8">
-                    <div className="mt-16">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-                            
-                        </div>
+                <div className="w-full">
+                    <div className="grid grid-cols-2 md:grid-cols-6 lg:grid-cols-9 gap-0 outline">
+                        { panelInstances }
                     </div>
                 </div>
             </div>
