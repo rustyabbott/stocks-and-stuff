@@ -39,7 +39,7 @@ export default function Home({ auth, laravelVersion, phpVersion }) {
                 </div>
 
                 <div className="w-full">
-                    <div className="grid grid-cols-2 md:grid-cols-6 lg:grid-cols-9 gap-0 outline">
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-0 outline">
                         { panelInstances }
                     </div>
                 </div>
