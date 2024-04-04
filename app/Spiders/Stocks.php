@@ -54,9 +54,24 @@ class Stocks extends BasicSpider
             'Russell 2000' => $russell2000
         ];
 
+        foreach ($quotes as $name => $price) {
+            $quotes[$name] = $this->formatPriceForDatabase($price);
+        }
+
         // php artisan roach:run Stocks
         var_dump($quotes);
 
         yield $this->item($quotes);
+    }
+
+    /**
+     * Prepare scraped stock prices for insert into database
+     * 
+     * @param  string $price  Stock price with commas e.g. 12,000.50
+     * @return float          Stock price without commas e.g. 12000.50
+     */
+    private function formatPriceForDatabase($price) {
+        $price = str_replace(',', '', $price);
+        return (float) number_format($price, 2, '.', '');
     }
 }
