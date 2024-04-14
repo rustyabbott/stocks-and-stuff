@@ -9,6 +9,7 @@ use RoachPHP\Extensions\StatsCollectorExtension;
 use RoachPHP\Http\Response;
 use RoachPHP\Spider\BasicSpider;
 use RoachPHP\Spider\ParseResult;
+use Illuminate\Support\Facades\DB;
 
 class Stocks extends BasicSpider
 {
@@ -54,12 +55,18 @@ class Stocks extends BasicSpider
             'Russell 2000' => $russell2000
         ];
 
+        $preparedData = [];
+
         foreach ($quotes as $name => $price) {
-            $quotes[$name] = $this->formatPriceForDatabase($price);
+            $preparedData[] = ['stock_name' => $name, 'curr_price' => $this->formatPriceForDatabase($price)];
         }
 
-        // php artisan roach:run Stocks
+        // sail shell -> php artisan roach:run Stocks
         var_dump($quotes);
+        var_dump($preparedData);
+
+        // Perform the batch insert using Laravel's query builder
+        DB::table('stocks')->insert($preparedData);
 
         yield $this->item($quotes);
     }
