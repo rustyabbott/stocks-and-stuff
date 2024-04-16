@@ -43,30 +43,49 @@ class Stocks extends BasicSpider
      */
     public function parse(Response $response): Generator
     {
-        $sAndP500 = $response->filter('#marketsummary-itm-0 > h3:nth-child(1) > fin-streamer:nth-child(3)')->text();
-        $dow30 = $response->filter('#marketsummary-itm-1 > h3:nth-child(1) > fin-streamer:nth-child(3)')->text();
-        $nasdaq = $response->filter('#marketsummary-itm-2 > h3:nth-child(1) > fin-streamer:nth-child(3)')->text();
-        $russell2000 = $response->filter('#marketsummary-itm-3 > h3:nth-child(1) > fin-streamer:nth-child(3)')->text();
-
-        $quotes = [
-            'S&P 500' => $sAndP500,
-            'Dow 30' => $dow30,
-            'Nasdaq' => $nasdaq,
-            'Russell 2000' => $russell2000
+        $selectors = [
+            'S&P 500' => 'li.box-item:nth-child(1) > a:nth-child(1) > div:nth-child(1) > span:nth-child(3) > fin-streamer:nth-child(1) > span:nth-child(1)',
+            'Dow 30' => 'li.box-item:nth-child(2) > a:nth-child(1) > div:nth-child(1) > span:nth-child(3) > fin-streamer:nth-child(1) > span:nth-child(1)',
+            'Nasdaq' => 'li.box-item:nth-child(3) > a:nth-child(1) > div:nth-child(1) > span:nth-child(3) > fin-streamer:nth-child(1) > span:nth-child(1)',
+            'Russell 2000' => 'li.box-item:nth-child(4) > a:nth-child(1) > div:nth-child(1) > span:nth-child(3) > fin-streamer:nth-child(1) > span:nth-child(1)'
         ];
 
-        $preparedData = [];
+        if (!empty($response->filter($selectors['S&P 500'])->text())) {
+            $sAndP500 = $response->filter($selectors['S&P 500'])->text();
+        }
+        
+        if (!empty($response->filter($selectors['Dow 30'])->text())) {
+            $dow30 = $response->filter($selectors['Dow 30'])->text();
+        }
 
-        foreach ($quotes as $name => $price) {
-            $preparedData[] = ['stock_name' => $name, 'curr_price' => $this->formatPriceForDatabase($price)];
+        if (!empty($response->filter($selectors['Nasdaq'])->text())) {
+            $nasdaq = $response->filter($selectors['Nasdaq'])->text();
+        }
+
+        if (!empty($response->filter($selectors['Russell 2000'])->text())) {
+            $russell2000 = $response->filter($selectors['Russell 2000'])->text();
+        }
+
+        $quotes = [];
+        !empty($sAndP500) ? $quotes['S&P 500'] = $sAndP500 : '';
+        !empty($dow30) ? $quotes['Dow 30'] = $dow30 : '';
+        !empty($nasdaq) ? $quotes['Nasdaq'] = $nasdaq : '';
+        !empty($russell2000) ? $quotes['Russell 2000'] = $russell2000 : '';
+
+        var_dump($quotes);
+
+        if (empty($quotes)) {
+            die('quotes is empty, exiting.');
         }
 
         // sail shell -> php artisan roach:run Stocks
         var_dump($quotes);
-        var_dump($preparedData);
 
-        // Perform the batch insert using Laravel's query builder
-        DB::table('stocks')->insert($preparedData);
+        foreach ($quotes as $name => $price) {
+            DB::table('stocks')
+                ->where('stock_name', $name)
+                ->update(['curr_price' => $this->formatPriceForDatabase($price)]);
+        }
 
         yield $this->item($quotes);
     }
