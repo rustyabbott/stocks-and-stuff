@@ -9,7 +9,7 @@ use RoachPHP\Extensions\StatsCollectorExtension;
 use RoachPHP\Http\Response;
 use RoachPHP\Spider\BasicSpider;
 use RoachPHP\Spider\ParseResult;
-use Illuminate\Support\Facades\DB;
+use App\Models\Stock;
 
 class Stocks extends BasicSpider
 {
@@ -72,8 +72,6 @@ class Stocks extends BasicSpider
         !empty($nasdaq) ? $quotes['Nasdaq'] = $nasdaq : '';
         !empty($russell2000) ? $quotes['Russell 2000'] = $russell2000 : '';
 
-        var_dump($quotes);
-
         if (empty($quotes)) {
             die('quotes is empty, exiting.');
         }
@@ -82,9 +80,8 @@ class Stocks extends BasicSpider
         var_dump($quotes);
 
         foreach ($quotes as $name => $price) {
-            DB::table('stocks')
-                ->where('stock_name', $name)
-                ->update(['curr_price' => $this->formatPriceForDatabase($price)]);
+            $stock = Stock::udpatePrice($name, $this->formatPriceForDatabase($price));
+            var_dump($stock);
         }
 
         yield $this->item($quotes);
