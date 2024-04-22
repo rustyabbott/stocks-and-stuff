@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('stock_name');
             $table->decimal('curr_price', 10, 2);
             $table->decimal('prev_price', 10, 2)->nullable();
+            $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
