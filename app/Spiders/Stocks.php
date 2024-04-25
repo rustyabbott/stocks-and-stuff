@@ -76,7 +76,7 @@ class Stocks extends BasicSpider
             die('quotes is empty, exiting.');
         }
 
-        // sail shell -> php artisan roach:run Stocks
+        // sail artisan roach:run Stocks
         var_dump($quotes);
 
         foreach ($quotes as $name => $price) {

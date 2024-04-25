@@ -9,7 +9,11 @@ class Stock extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['stock_name', 'curr_price', 'prev_price'];
+    protected $fillable = [
+        'stock_name',
+        'curr_price',
+        'prev_price'
+    ];
 
     /**
      * Updates stock curr_price and prev_price
