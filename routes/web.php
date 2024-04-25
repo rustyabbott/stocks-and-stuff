@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Models\Stock;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,11 +18,14 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
+    $stocks = Stock::all();
+
     return Inertia::render('Home', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'stocks' => $stocks
     ]);
 });
 

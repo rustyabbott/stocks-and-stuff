@@ -2,9 +2,9 @@ import Footer from '@/Components/Footer';
 import TickerPanel from '@/Components/TickerPanel';
 import { Link, Head } from '@inertiajs/react';
 
-export default function Home({ auth, laravelVersion, phpVersion }) {
-    const panelInstances = Array.from({ length: 10 }, (_, index) => (
-        <TickerPanel key={index} />
+export default function Home({ auth, laravelVersion, phpVersion, stocks }) {
+    const panelInstances = stocks.map((stock, index) => (
+        <TickerPanel key={index} stock={stock} param="someValue" />
     ));
 
     return (
