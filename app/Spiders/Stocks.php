@@ -50,51 +50,36 @@ class Stocks extends BasicSpider
             'Russell 2000' => 'li.box-item:nth-child(4) > a:nth-child(1) > div:nth-child(1) > span:nth-child(3) > fin-streamer:nth-child(1) > span:nth-child(1)'
         ];
 
-        if (!empty($response->filter($selectors['S&P 500'])->text())) {
-            $sAndP500 = $response->filter($selectors['S&P 500'])->text();
-        }
-        
-        if (!empty($response->filter($selectors['Dow 30'])->text())) {
-            $dow30 = $response->filter($selectors['Dow 30'])->text();
-        }
+        $vals = [];
+        $vals['S&P 500'] = $response->filter($selectors['S&P 500'])->text();
+        $vals['Dow 30'] = $response->filter($selectors['Dow 30'])->text();
+        $vals['Nasdaq'] = $response->filter($selectors['Nasdaq'])->text();
+        $vals['Russell 2000'] = $response->filter($selectors['Russell 2000'])->text();
 
-        if (!empty($response->filter($selectors['Nasdaq'])->text())) {
-            $nasdaq = $response->filter($selectors['Nasdaq'])->text();
-        }
+        $stocks = [];
+        foreach ($vals as $stockName => $val) {
+            if (empty($val)) {
+                echo "$stockName is empty, skipping.\n\n";
+                continue;
+            } else {
+                echo "$stockName val is $val, moving forward.\n\n";
+            }
 
-        if (!empty($response->filter($selectors['Russell 2000'])->text())) {
-            $russell2000 = $response->filter($selectors['Russell 2000'])->text();
-        }
+            $val = (float) str_replace(',', '', $val);
+            if (!is_float($val)) {
+                echo "We've removed commas and tried to convert to float.\n Result: $val\n Skipping $stockName.\n\n";
+                continue;
+            } else {
+                echo "Removed commas and successfully converted $stockName to float. Result: $val.\n\n";
+            }
 
-        $quotes = [];
-        !empty($sAndP500) ? $quotes['S&P 500'] = $sAndP500 : '';
-        !empty($dow30) ? $quotes['Dow 30'] = $dow30 : '';
-        !empty($nasdaq) ? $quotes['Nasdaq'] = $nasdaq : '';
-        !empty($russell2000) ? $quotes['Russell 2000'] = $russell2000 : '';
-
-        if (empty($quotes)) {
-            die('quotes is empty, exiting.');
+            $stocks[] = Stock::udpatePrice($stockName, number_format($val, 2, '.', ''));
         }
 
         // sail artisan roach:run Stocks
-        var_dump($quotes);
+        echo "Dumping stocks array...\n\n";
+        var_dump($stocks);
 
-        foreach ($quotes as $name => $price) {
-            $stock = Stock::udpatePrice($name, $this->formatPriceForDatabase($price));
-            var_dump($stock);
-        }
-
-        yield $this->item($quotes);
-    }
-
-    /**
-     * Prepare scraped stock prices for insert into database
-     * 
-     * @param  string $price  Stock price with commas e.g. 12,000.50
-     * @return float          Stock price without commas e.g. 12000.50
-     */
-    private function formatPriceForDatabase($price) {
-        $price = str_replace(',', '', $price);
-        return (float) number_format($price, 2, '.', '');
+        yield $this->item($stocks);
     }
 }
