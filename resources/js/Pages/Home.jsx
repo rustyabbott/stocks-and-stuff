@@ -2,7 +2,7 @@ import Footer from '@/Components/Footer';
 import TickerPanel from '@/Components/TickerPanel';
 import { Link, Head } from '@inertiajs/react';
 
-export default function Home({ auth, laravelVersion, phpVersion, stocks }) {
+export default function Home({ auth, stocks }) {
     const panelInstances = stocks.map((stock, index) => (
         <TickerPanel key={index} stock={stock} param="someValue" />
     ));
