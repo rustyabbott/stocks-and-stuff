@@ -44,19 +44,21 @@ class Stocks extends BasicSpider
     public function parse(Response $response): Generator
     {
         $selectors = [
-            'S&P 500' => 'li.box-item:nth-child(1) > a:nth-child(1) > div:nth-child(1) > span:nth-child(3) > fin-streamer:nth-child(1) > span:nth-child(1)',
-            'Dow 30' => 'li.box-item:nth-child(2) > a:nth-child(1) > div:nth-child(1) > span:nth-child(3) > fin-streamer:nth-child(1) > span:nth-child(1)',
-            'Nasdaq' => 'li.box-item:nth-child(3) > a:nth-child(1) > div:nth-child(1) > span:nth-child(3) > fin-streamer:nth-child(1) > span:nth-child(1)',
-            'Russell 2000' => 'li.box-item:nth-child(4) > a:nth-child(1) > div:nth-child(1) > span:nth-child(3) > fin-streamer:nth-child(1) > span:nth-child(1)'
+            'S&P 500' => 'li.box-item:nth-child(1) > a:nth-child(1) > div:nth-child(1) > fin-streamer:nth-child(3) > span:nth-child(1)',
+            'Dow 30' => 'li.box-item:nth-child(2) > a:nth-child(1) > div:nth-child(1) > fin-streamer:nth-child(3) > span:nth-child(1)',
+            'Nasdaq' => 'li.box-item:nth-child(3) > a:nth-child(1) > div:nth-child(1) > fin-streamer:nth-child(3) > span:nth-child(1)',
+            'Russell 2000' => 'li.box-item:nth-child(4) > a:nth-child(1) > div:nth-child(1) > fin-streamer:nth-child(3) > span:nth-child(1)'
         ];
 
         $vals = [];
+        
         $vals['S&P 500'] = $response->filter($selectors['S&P 500'])->text();
         $vals['Dow 30'] = $response->filter($selectors['Dow 30'])->text();
         $vals['Nasdaq'] = $response->filter($selectors['Nasdaq'])->text();
         $vals['Russell 2000'] = $response->filter($selectors['Russell 2000'])->text();
 
         $stocks = [];
+
         foreach ($vals as $stockName => $val) {
             if (empty($val)) {
                 echo "$stockName is empty, skipping.\n\n";
@@ -66,6 +68,7 @@ class Stocks extends BasicSpider
             }
 
             $val = (float) str_replace(',', '', $val);
+            
             if (!is_float($val)) {
                 echo "We've removed commas and tried to convert to float.\n Result: $val\n Skipping $stockName.\n\n";
                 continue;

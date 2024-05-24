@@ -1,7 +1,7 @@
 const TickerPanel = ({ stock }) => {
-    const bgColor = stock.curr_price >= stock.prev_price ? 'bg-green-400' : 'bg-red-700';
+    const bgColor = stock.curr_price >= stock.prev_price ? 'bg-green-400 dark:bg-green-700' : 'bg-red-700';
     const priceDiff = stock.curr_price - stock.prev_price;
-    const plusOrMinus = priceDiff >= 0 ? '+' : '-';
+    const plusOrMinus = priceDiff >= 0 ? '+' : '';
 
     const currentPrice = new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -16,8 +16,8 @@ const TickerPanel = ({ stock }) => {
     }).format(priceDiff);
 
     return (
-        <div className={`outline-dotted h-[150px] ${bgColor} text-white p-2`}>
-            <div className="text-3xl">
+        <div className={`overflow-hidden outline-dotted h-[100px] ${bgColor} text-white p-2`}>
+            <div className="text-2xl">
                 { stock.stock_name }
             </div>
             <div>
