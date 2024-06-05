@@ -81,7 +81,7 @@ class Stocks extends BasicSpider
 
         // sail artisan roach:run Stocks
         echo "Dumping stocks array...\n\n";
-        var_dump($stocks);
+        //var_dump($stocks);
 
         yield $this->item($stocks);
     }
