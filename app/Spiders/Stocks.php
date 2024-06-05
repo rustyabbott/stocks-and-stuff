@@ -14,7 +14,8 @@ use App\Models\Stock;
 class Stocks extends BasicSpider
 {
     public array $startUrls = [
-        'https://finance.yahoo.com'
+        'https://finance.yahoo.com',
+        'https://finance.yahoo.com/quote/TSLA/'
     ];
 
     public array $downloaderMiddleware = [
@@ -47,7 +48,8 @@ class Stocks extends BasicSpider
             'S&P 500' => 'li.box-item:nth-child(1) > a:nth-child(1) > div:nth-child(1) > fin-streamer:nth-child(3) > span:nth-child(1)',
             'Dow 30' => 'li.box-item:nth-child(2) > a:nth-child(1) > div:nth-child(1) > fin-streamer:nth-child(3) > span:nth-child(1)',
             'Nasdaq' => 'li.box-item:nth-child(3) > a:nth-child(1) > div:nth-child(1) > fin-streamer:nth-child(3) > span:nth-child(1)',
-            'Russell 2000' => 'li.box-item:nth-child(4) > a:nth-child(1) > div:nth-child(1) > fin-streamer:nth-child(3) > span:nth-child(1)'
+            'Russell 2000' => 'li.box-item:nth-child(4) > a:nth-child(1) > div:nth-child(1) > fin-streamer:nth-child(3) > span:nth-child(1)',
+            'TSLA' => '.livePrice > span:nth-child(1)'
         ];
 
         $vals = [];
@@ -56,6 +58,7 @@ class Stocks extends BasicSpider
         $vals['Dow 30'] = $response->filter($selectors['Dow 30'])->text();
         $vals['Nasdaq'] = $response->filter($selectors['Nasdaq'])->text();
         $vals['Russell 2000'] = $response->filter($selectors['Russell 2000'])->text();
+        $vals['TSLA'] = $response->filter($selectors['TSLA'])->text();
 
         $stocks = [];
 
